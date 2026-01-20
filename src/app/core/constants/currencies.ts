@@ -1,0 +1,1 @@
+export const CURRENCIES = ['CAD', 'ARS', 'GBP'];
