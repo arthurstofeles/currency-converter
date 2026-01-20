@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, finalize, map, Observable, of } from 'rxjs';
 import { Currency } from '../models/currency';
 
 @Injectable({
@@ -12,12 +12,26 @@ export class CurrencyService {
   private readonly API_URL =
     'https://economia.awesomeapi.com.br/json/last/CAD-BRL,ARS-BRL,GBP-BRL';
 
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  private errorSubject = new BehaviorSubject<string | null>(null);
+
+  loading$ = this.loadingSubject.asObservable();
+  error$ = this.errorSubject.asObservable();
+
   getCurrencies(): Observable<Currency[]> {
-    return this.http
-      .get<any>(this.API_URL)
-      .pipe(map((response) => this.mapResponse(response)));
+    this.loadingSubject.next(true);
+    this.errorSubject.next(null);
+
+    return this.http.get<any>(this.API_URL).pipe(
+      map((response) => this.mapResponse(response)),
+      catchError(() => {
+        this.errorSubject.next('Algo deu errado');
+        return of([]);
+      }),
+      finalize(() => this.loadingSubject.next(false)),
+    );
   }
-  
+
   private mapResponse(response: any): Currency[] {
     return [
       this.buildCurrency('CAD', response.CADBRL),
