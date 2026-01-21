@@ -1,0 +1,12 @@
+.app-home {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .currencies {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 94px;
+    }
+}

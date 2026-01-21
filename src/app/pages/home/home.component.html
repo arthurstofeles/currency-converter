@@ -1,11 +1,11 @@
-<section>
-  <p *ngIf="loading$ | async">Carregando cotações...</p>
+<section class="app-home">
+  <!-- <p *ngIf="loading$ | async">Carregando cotações...</p>
 
   <p *ngIf="error$ | async as error" class="error">
     {{ error }}
-  </p>
+  </p> -->
 
-  <div *ngIf="currencies$ | async as currencies">
+  <div class="currencies" *ngIf="currencies$ | async as currencies">
     <app-currency-card
       *ngFor="let currency of currencies"
       [currency]="currency"

@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, finalize, map, Observable, of } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  finalize,
+  map,
+  Observable,
+  of,
+} from 'rxjs';
 import { Currency } from '../models/currency';
 
 @Injectable({
@@ -41,8 +48,12 @@ export class CurrencyService {
   }
 
   private buildCurrency(code: string, data: any): Currency {
+    let index = data.name.indexOf('/');
+    let name = data.name.substring(0, index);
+
     return {
       code,
+      name: name,
       value: Number(data.bid),
       variation: Number(data.pctChange),
       updatedAt: new Date(Number(data.timestamp) * 1000),

@@ -1,12 +1,12 @@
 <div class="currency-card">
-  <h3>{{ currency.code }}</h3>
+  <h3>{{ currency.name }}</h3>
 
   <p class="value" [ngClass]="currency.value | currencyValueColor">
     {{ currency.value | currency: 'BRL' }} 
   </p>
 
   <p class="variation">
-    {{ currency.variation }}%
+    Variação (%) {{ currency.variation }}%
   </p>
 
   <small class="updated-at">

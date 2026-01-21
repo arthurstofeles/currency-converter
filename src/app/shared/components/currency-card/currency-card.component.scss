@@ -1,7 +1,9 @@
+@use '../../../../styles/colors';
+
 .currency-card {
   padding: 16px;
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: colors.$card-background;
   border: 1px solid #eaeaea;
 
   display: flex;
@@ -10,13 +12,13 @@
 }
 
 .value.red {
-  color: #e53935;
+  color: colors.$text-red;
 }
 
 .value.green {
-  color: #43a047;
+  color: colors.$text-green;
 }
 
 .value.blue {
-  color: #1e88e5;
+  color: colors.$text-blue;
 }

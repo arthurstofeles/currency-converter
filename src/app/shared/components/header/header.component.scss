@@ -1,5 +1,7 @@
+@use '../../../../styles/colors';
+
 .app-header {
-  background-color: #ffffff;
+  background-color: colors.$app-header-background;
   padding: 28px;
   display: flex;
   align-items: center;
