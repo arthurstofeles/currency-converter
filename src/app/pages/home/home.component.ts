@@ -3,11 +3,12 @@ import { CurrencyService } from '../../core/services/currency.service';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { Currency } from '../../core/models/currency';
+import { CurrencyCardComponent } from '../../shared/components/currency-card/currency-card.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CurrencyCardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

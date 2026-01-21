@@ -1,0 +1,16 @@
+<div class="currency-card">
+  <h3>{{ currency.code }}</h3>
+
+  <p class="value">
+    {{ currency.value | number:'1.2-2' }} BRL
+  </p>
+
+  <p class="variation">
+    {{ currency.variation }}%
+  </p>
+
+  <small class="updated-at">
+    Atualizado em:
+    {{ currency.updatedAt | date:'HH:mm:ss' }}
+  </small>
+</div>
