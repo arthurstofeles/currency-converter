@@ -5,11 +5,10 @@
     {{ error }}
   </p>
 
-  <ul *ngIf="currencies$ | async as currencies">
-    <li *ngFor="let currency of currencies">
-      <strong>{{ currency.code }}</strong> —
-      {{ currency.value | number:'1.2-2' }} BRL
-      ({{ currency.variation }}%)
-    </li>
-  </ul>
+  <div *ngIf="currencies$ | async as currencies">
+    <app-currency-card
+      *ngFor="let currency of currencies"
+      [currency]="currency"
+    />
+  </div>
 </section>
