@@ -1,11 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CurrencyService } from '../../core/services/currency.service';
+import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { Currency } from '../../core/models/currency';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
+  currencies$!: Observable<Currency[]>;
+  loading$! : Observable<boolean>
+  error$! : Observable<string | null>;
+
+  constructor(private currencyService: CurrencyService) { }
+
+  ngOnInit(): void {
+    this.loading$ = this.currencyService.loading$;
+    this.error$ = this.currencyService.error$;
+    this.currencies$ = this.currencyService.getCurrencies();
+  }
 }

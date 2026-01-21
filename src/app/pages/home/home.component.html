@@ -1,1 +1,15 @@
-<p>home works!</p>
+<section>
+  <p *ngIf="loading$ | async">Carregando cotações...</p>
+
+  <p *ngIf="error$ | async as error" class="error">
+    {{ error }}
+  </p>
+
+  <ul *ngIf="currencies$ | async as currencies">
+    <li *ngFor="let currency of currencies">
+      <strong>{{ currency.code }}</strong> —
+      {{ currency.value | number:'1.2-2' }} BRL
+      ({{ currency.variation }}%)
+    </li>
+  </ul>
+</section>
