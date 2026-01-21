@@ -7,6 +7,7 @@ import {
   map,
   Observable,
   of,
+  tap,
 } from 'rxjs';
 import { Currency } from '../models/currency';
 
@@ -15,6 +16,12 @@ import { Currency } from '../models/currency';
 })
 export class CurrencyService {
   constructor(private http: HttpClient) {}
+
+  private readonly CACHE_DURATION = 3 * 60 * 1000;
+  private readonly STORAGE_KEY = 'currency_cache';
+
+  private cache: Currency[] | null = null;
+  private lastFetchTime: number | null = null;
 
   private readonly API_URL =
     'https://economia.awesomeapi.com.br/json/last/CAD-BRL,ARS-BRL,GBP-BRL';
@@ -26,11 +33,20 @@ export class CurrencyService {
   error$ = this.errorSubject.asObservable();
 
   getCurrencies(): Observable<Currency[]> {
+    const cachedData = this.getCacheFromStorage();
+
+    if (cachedData) {
+      return of(cachedData);
+    }
+
     this.loadingSubject.next(true);
     this.errorSubject.next(null);
 
     return this.http.get<any>(this.API_URL).pipe(
       map((response) => this.mapResponse(response)),
+      tap((currencies) => {
+        this.saveCacheToStorage(currencies);
+      }),
       catchError(() => {
         this.errorSubject.next('Algo deu errado');
         return of([]);
@@ -58,5 +74,37 @@ export class CurrencyService {
       variation: Number(data.pctChange),
       updatedAt: new Date(Number(data.timestamp) * 1000),
     };
+  }
+
+  private getCacheFromStorage(): Currency[] | null {
+    const cached = localStorage.getItem(this.STORAGE_KEY);
+
+    if (!cached) {
+      return null;
+    }
+
+    const { data, timestamp } = JSON.parse(cached);
+
+    const isValid = Date.now() - timestamp < this.CACHE_DURATION;
+
+    if (!isValid) {
+      localStorage.removeItem(this.STORAGE_KEY);
+      return null;
+    }
+
+    return data.map((item: Currency) => ({
+      ...item,
+      updatedAt: new Date(item.updatedAt),
+    }));
+  }
+
+  private saveCacheToStorage(data: Currency[]): void {
+    localStorage.setItem(
+      this.STORAGE_KEY,
+      JSON.stringify({
+        data,
+        timestamp: Date.now(),
+      }),
+    );
   }
 }
