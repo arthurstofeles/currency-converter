@@ -12,15 +12,13 @@ import {
   throwError,
 } from 'rxjs';
 import { Currency } from '../models/currency';
+import { CACHE_DURATION, STORAGE_KEY } from '../constants/currencies';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CurrencyService {
   constructor(private http: HttpClient) {}
-
-  private readonly CACHE_DURATION = 3 * 60 * 1000;
-  private readonly STORAGE_KEY = 'currency_cache';
 
   private cache: Currency[] | null = null;
   private lastFetchTime: number | null = null;
@@ -45,7 +43,7 @@ export class CurrencyService {
     this.errorSubject.next(null);
 
     return this.http.get<any>(this.API_URL).pipe(
-      delay(2000),
+      delay(1000),
       map((response) => this.mapResponse(response)),
       tap((currencies) => {
         this.saveCacheToStorage(currencies);
@@ -76,7 +74,7 @@ export class CurrencyService {
   }
 
   private getCacheFromStorage(): Currency[] | null {
-    const cached = localStorage.getItem(this.STORAGE_KEY);
+    const cached = localStorage.getItem(STORAGE_KEY);
 
     if (!cached) {
       return null;
@@ -84,10 +82,10 @@ export class CurrencyService {
 
     const { data, timestamp } = JSON.parse(cached);
 
-    const isValid = Date.now() - timestamp < this.CACHE_DURATION;
+    const isValid = Date.now() - timestamp < CACHE_DURATION;
 
     if (!isValid) {
-      localStorage.removeItem(this.STORAGE_KEY);
+      localStorage.removeItem(STORAGE_KEY);
       return null;
     }
 
@@ -99,11 +97,21 @@ export class CurrencyService {
 
   private saveCacheToStorage(data: Currency[]): void {
     localStorage.setItem(
-      this.STORAGE_KEY,
+      STORAGE_KEY,
       JSON.stringify({
         data,
         timestamp: Date.now(),
       }),
     );
+  }
+
+  getRemainingCacheTime(): number {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return 0;
+
+    const parsed = JSON.parse(raw);
+    const elapsed = Date.now() - parsed.timestamp;
+
+    return Math.max(CACHE_DURATION - elapsed, 0);
   }
 }

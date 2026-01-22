@@ -2,21 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { CurrencyService } from '../../core/services/currency.service';
 import { CommonModule } from '@angular/common';
 import {
-  combineLatest,
   interval,
-  map,
-  Observable,
   startWith,
   Subject,
   switchMap,
   takeUntil,
+  tap,
+  timer,
 } from 'rxjs';
 import { Currency } from '../../core/models/currency';
 import {
   CurrencyCardComponent,
   CurrencyCardState,
 } from '../../shared/components/currency-card/currency-card.component';
-import { CURRENCY_META } from '../../core/constants/currencies';
+import { CURRENCY_META, CACHE_DURATION } from '../../core/constants/currencies';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -25,24 +24,19 @@ import { CURRENCY_META } from '../../core/constants/currencies';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  // loading$!: Observable<boolean>;
-  // error$!: Observable<string | null>;
-  // // cardState$!: Observable<CurrencyCardState>;
-
   currencyMeta = CURRENCY_META;
-
   currenciesMap: Partial<Record<string, Currency>> = {};
-
   cardState: CurrencyCardState = 'loading';
-
   private destroy$ = new Subject<void>();
+  private cacheTime!: number;
 
   constructor(private currencyService: CurrencyService) {}
 
   ngOnInit(): void {
-    interval(3 * 60 * 1000)
-      .pipe(startWith(0), takeUntil(this.destroy$))
-      .subscribe(() => this.loadCurrencies());
+    // interval(this.cacheTime)
+    //   .pipe(startWith(0), takeUntil(this.destroy$))
+    //   .subscribe(() => this.loadCurrencies());
+    this.startAutoRefresh();
   }
 
   loadCurrencies(): void {
@@ -64,6 +58,22 @@ export class HomeComponent implements OnInit {
         this.cardState = 'error';
       },
     });
+  }
+
+  private startAutoRefresh(): void {
+    const initialDelay = this.currencyService.getRemainingCacheTime();
+    if (initialDelay < CACHE_DURATION) this.loadCurrencies();
+    timer(initialDelay)
+      .pipe(
+        tap(() => this.loadCurrencies()),
+
+        switchMap(() =>
+          interval(CACHE_DURATION).pipe(tap(() => this.loadCurrencies())),
+        ),
+
+        takeUntil(this.destroy$),
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
