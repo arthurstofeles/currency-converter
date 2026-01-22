@@ -20,17 +20,8 @@ import { CACHE_DURATION, STORAGE_KEY } from '../constants/currencies';
 export class CurrencyService {
   constructor(private http: HttpClient) {}
 
-  private cache: Currency[] | null = null;
-  private lastFetchTime: number | null = null;
-
   private readonly API_URL =
     'https://economia.awesomeapi.com.br/json/last/CAD-BRL,ARS-BRL,GBP-BRL';
-
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  private errorSubject = new BehaviorSubject<string | null>(null);
-
-  loading$ = this.loadingSubject.asObservable();
-  error$ = this.errorSubject.asObservable();
 
   getCurrencies(): Observable<Currency[]> {
     const cachedData = this.getCacheFromStorage();
@@ -39,9 +30,6 @@ export class CurrencyService {
       return of(cachedData);
     }
 
-    this.loadingSubject.next(true);
-    this.errorSubject.next(null);
-
     return this.http.get<any>(this.API_URL).pipe(
       delay(1000),
       map((response) => this.mapResponse(response)),
@@ -49,10 +37,8 @@ export class CurrencyService {
         this.saveCacheToStorage(currencies);
       }),
       catchError(() => {
-        this.errorSubject.next('Algo deu errado');
         return throwError(() => Error);
       }),
-      finalize(() => this.loadingSubject.next(false)),
     );
   }
 
