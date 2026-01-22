@@ -5,7 +5,7 @@ import { DecimalPipe, getCurrencySymbol } from '@angular/common';
   name: 'brlValue',
   standalone: true,
 })
-export class BrlValuePipe implements PipeTransform {
+export class CurrencyValueFormatPipe implements PipeTransform {
   private decimalPipe = new DecimalPipe('pt-BR');
   private symbol = getCurrencySymbol('BRL', 'narrow');
 

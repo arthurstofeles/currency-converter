@@ -1,27 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  BehaviorSubject,
   catchError,
   delay,
-  finalize,
   map,
   Observable,
   of,
   tap,
   throwError,
 } from 'rxjs';
-import { Currency } from '../models/currency';
-import { CACHE_DURATION, STORAGE_KEY } from '../constants/currencies';
+import { AwesomeApiCurrency, AwesomeApiResponse, Currency } from '../models/currency';
+import { API_URL, CACHE_DURATION, STORAGE_KEY } from '../constants/currencies';
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class CurrencyService {
   constructor(private http: HttpClient) {}
-
-  private readonly API_URL =
-    'https://economia.awesomeapi.com.br/json/last/CAD-BRL,ARS-BRL,GBP-BRL';
 
   getCurrencies(): Observable<Currency[]> {
     const cachedData = this.getCacheFromStorage();
@@ -30,7 +26,7 @@ export class CurrencyService {
       return of(cachedData);
     }
 
-    return this.http.get<any>(this.API_URL).pipe(
+    return this.http.get<AwesomeApiResponse>(API_URL).pipe(
       delay(1000),
       map((response) => this.mapResponse(response)),
       tap((currencies) => {
@@ -42,20 +38,20 @@ export class CurrencyService {
     );
   }
 
-  private mapResponse(response: any): Currency[] {
-    return [
-      this.buildCurrency('CAD', response.CADBRL),
-      this.buildCurrency('ARS', response.ARSBRL),
-      this.buildCurrency('GBP', response.GBPBRL),
-    ];
+private mapResponse(response: AwesomeApiResponse): Currency[] {
+  return [
+    this.buildCurrency('CAD', response['CADBRL']),
+    this.buildCurrency('ARS', response['ARSBRL']),
+    this.buildCurrency('GBP', response['GBPBRL']),
+  ];
   }
 
-  private buildCurrency(code: string, data: any): Currency {
+  private buildCurrency(code: string, data: AwesomeApiCurrency): Currency {
     return {
       code,
-      value: Number(data.bid),
-      variation: Number(data.pctChange),
-      updatedAt: new Date(Number(data.timestamp) * 1000),
+      value: Number(data['bid']),
+      variation: Number(data['pctChange']),
+      updatedAt: new Date(Number(data['timestamp']) * 1000),
     };
   }
 

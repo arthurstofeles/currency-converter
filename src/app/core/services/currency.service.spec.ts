@@ -1,16 +1,15 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { CurrencyService } from './currency.service';
+import { API_URL, CACHE_DURATION, STORAGE_KEY } from '../constants/currencies';
+import { Currency } from '../models/currency';
 
 describe('CurrencyService', () => {
   let service: CurrencyService;
   let httpMock: HttpTestingController;
-
-  const API_URL =
-    'https://economia.awesomeapi.com.br/json/last/CAD-BRL,ARS-BRL,GBP-BRL';
 
   const mockApiResponse = {
     CADBRL: {
@@ -42,57 +41,106 @@ describe('CurrencyService', () => {
 
   afterEach(() => {
     httpMock.verify();
+    localStorage.clear();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+  it('should return data from the cache when valid.', () => {
+    const cachedCurrencies: Currency[] = [
+      {
+        code: 'CAD',
+        value: 3.84,
+        variation: 0.1,
+        updatedAt: new Date(),
+      },
+    ];
 
-  it('should fetch currencies from API', () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        data: cachedCurrencies,
+        timestamp: Date.now(),
+      }),
+    );
+
     service.getCurrencies().subscribe((currencies) => {
-      expect(currencies.length).toBe(3);
+      expect(currencies.length).toBe(1);
       expect(currencies[0].code).toBe('CAD');
-      expect(currencies[1].code).toBe('ARS');
-      expect(currencies[2].code).toBe('GBP');
+    });
+
+    httpMock.expectNone(() => true);
+  });
+
+  it('should call the API when there is no cache.', fakeAsync(() => {
+    let result: Currency[] = [];
+
+    service.getCurrencies().subscribe((currencies) => {
+      result = currencies;
     });
 
     const req = httpMock.expectOne(API_URL);
+
     expect(req.request.method).toBe('GET');
 
     req.flush(mockApiResponse);
-  });
 
-  it('should set loading true while fetching', () => {
-    const loadingStates: boolean[] = [];
+    tick(1000);
 
-    service.loading$.subscribe((value) => {
-      loadingStates.push(value);
-    });
+    expect(result.length).toBe(3);
+    expect(result[0].code).toBe('CAD');
+  }));
 
+  it('should save the cache after fetching from the API.', fakeAsync(() => {
     service.getCurrencies().subscribe();
 
     const req = httpMock.expectOne(API_URL);
-    req.flush(mockApiResponse);
 
-    expect(loadingStates).toEqual([false, true, false]);
+    req.flush(mockApiResponse);
+    tick(1000);
+
+    const cached = localStorage.getItem(STORAGE_KEY);
+    expect(cached).toBeTruthy();
+  }));
+
+  it('should clear the expired cache.', () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        data: [],
+        timestamp: Date.now() - CACHE_DURATION - 1000,
+      }),
+    );
+
+    const result = (service as any).getCacheFromStorage();
+    expect(result).toBeNull();
   });
 
-  it('should handle error and return empty array', () => {
-    let errorMessage: string | null = null;
+  it('should propagate an error when the API fails.', fakeAsync(() => {
+    let error: any;
 
-    service.error$.subscribe((error) => {
-      if (error) {
-        errorMessage = error;
-      }
-    });
-
-    service.getCurrencies().subscribe((currencies) => {
-      expect(currencies.length).toBe(0);
+    service.getCurrencies().subscribe({
+      error: (err) => (error = err),
     });
 
     const req = httpMock.expectOne(API_URL);
+
     req.error(new ErrorEvent('Network error'));
 
-    expect(errorMessage).toBeTruthy();
+    tick(1000);
+
+    expect(error).toBeTruthy();
+  }));
+
+  it('should return the remaining cache time correctly', () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        data: [],
+        timestamp: Date.now() - 1000,
+      }),
+    );
+
+    const remaining = service.getRemainingCacheTime();
+    expect(remaining).toBeGreaterThan(0);
+    expect(remaining).toBeLessThanOrEqual(CACHE_DURATION);
   });
 });

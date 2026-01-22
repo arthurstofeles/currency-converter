@@ -4,13 +4,13 @@ import { Currency } from '../../../core/models/currency';
 import { CurrencyValueColorPipe } from '../../pipes/currency-value-color/currency-value-color.pipe';
 import { LoaderComponent } from '../loader/loader.component';
 import { ButtonComponent } from '../button/button.component';
-import { BrlValuePipe } from '../../pipes/brl-value/brl-value.pipe';
+import { CurrencyValueFormatPipe } from '../../pipes/currency-value-format/currency-value-format.pipe';
 
 export type CurrencyCardState = 'loading' | 'error' | 'success';
 @Component({
   selector: 'app-currency-card',
   standalone: true,
-  imports: [CommonModule, CurrencyValueColorPipe, LoaderComponent, ButtonComponent, BrlValuePipe],
+  imports: [CommonModule, CurrencyValueColorPipe, LoaderComponent, ButtonComponent, CurrencyValueFormatPipe],
   templateUrl: './currency-card.component.html',
   styleUrl: './currency-card.component.scss',
 })
