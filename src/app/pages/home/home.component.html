@@ -1,18 +1,10 @@
 <section class="app-home">
-  <!-- <p *ngIf="loading$ | async">Carregando cotações...</p>
-
-  <p *ngIf="error$ | async as error" class="error">
-    {{ error }}
-  </p> -->
-
-  <!-- <app-loader></app-loader>
-
-  <app-button label="Recarregar" (clicked)="reload()"></app-button> -->
-
   <div class="currencies" *ngIf="currencies$ | async as currencies">
     <app-currency-card
       *ngFor="let currency of currencies"
       [currency]="currency"
+      [state]="'error'"
+      (retry)="reload()"
     />
   </div>
 </section>

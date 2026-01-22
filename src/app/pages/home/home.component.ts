@@ -4,18 +4,12 @@ import { CommonModule } from '@angular/common';
 import { interval, Observable, startWith, switchMap } from 'rxjs';
 import { Currency } from '../../core/models/currency';
 import { CurrencyCardComponent } from '../../shared/components/currency-card/currency-card.component';
-import { LoaderComponent } from '../../shared/components/loader/loader.component';
-import { ButtonComponent } from '../../shared/components/button/button.component';
-
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     CommonModule,
-    CurrencyCardComponent,
-    LoaderComponent,
-    ButtonComponent,
-  ],
+    CurrencyCardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

@@ -21,6 +21,22 @@
   }
 
   .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 309px;
+    
+    .error-state {
+      text-align: center;
+      p {
+        font-weight: 400;
+        font-size: 26px;
+        color: colors.$text-basic;
+        margin-bottom: 11px;
+      }
+    }
+
     .currency-value {
       font-weight: 500;
       font-size: 64px;
