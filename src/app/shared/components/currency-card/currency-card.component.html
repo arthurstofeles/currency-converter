@@ -1,16 +1,20 @@
 <div class="currency-card">
-  <h3>{{ currency.name }}</h3>
-
-  <p class="value" [ngClass]="currency.value | currencyValueColor">
-    {{ currency.value | currency: 'BRL' }} 
-  </p>
-
-  <p class="variation">
-    Variação (%) {{ currency.variation }}%
-  </p>
-
-  <small class="updated-at">
-    Atualizado em:
-    {{ currency.updatedAt | date:'HH:mm:ss' }}
-  </small>
+  <div class="card-header">
+    <h3>{{ currency.name }}</h3>
+  </div>
+  <div class="card-body">
+    <p class="currency-value" [ngClass]="currency.value | currencyValueColor">
+      {{ currency.value | currency: "BRL" }}
+    </p>
+    <div class="currency-box">
+      <div class="box-info">
+        <span>Variação (%)</span>
+          <p>{{ currency.variation }}</p>
+      </div>
+      <div class="box-info">
+        <span>Atualizado em:</span>
+          <p>{{ currency.updatedAt | date: "HH:mm:ss" }}</p>
+      </div>
+    </div>
+  </div>
 </div>

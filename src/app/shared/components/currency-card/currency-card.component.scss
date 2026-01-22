@@ -1,24 +1,74 @@
-@use '../../../../styles/colors';
+@use "../../../../styles/colors";
 
 .currency-card {
-  padding: 16px;
-  border-radius: 8px;
+  border-radius: 16px;
   background-color: colors.$card-background;
-  border: 1px solid #eaeaea;
-
+  box-shadow: 0px 0px 6px 2px #cccccc40;
+  width: 430px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
+  overflow: hidden;
 
-.value.red {
-  color: colors.$text-red;
-}
+  .card-header {
+    background-color: colors.$card-header-background;
+    padding: 42px;
+    text-align: center;
 
-.value.green {
-  color: colors.$text-green;
-}
+    h3 {
+      font-weight: 700;
+      font-size: 30px;
+    }
+  }
 
-.value.blue {
-  color: colors.$text-blue;
+  .card-body {
+    .currency-value {
+      font-weight: 500;
+      font-size: 64px;
+      text-align: center;
+      padding-top: 47px;
+      padding-bottom: 57px;
+    }
+    .currency-value.red {
+      color: colors.$text-red;
+    }
+
+    .currency-value.green {
+      color: colors.$text-green;
+    }
+
+    .currency-value.blue {
+      color: colors.$text-blue;
+    }
+
+    .currency-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 0.5px solid #cccccc;
+
+      .box-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-top: 16px;
+        padding-bottom: 12px;
+
+        &:first-child {
+          border-right: 0.5px solid #cccccc;
+        }
+
+        span {
+          font-weight: 600;
+          font-size: 18px;
+          color: colors.$text-secundary;
+        }
+
+        p {
+          font-weight: 600;
+          font-size: 24px;
+          color: colors.$text-basic;
+        }
+      }
+    }
+  }
 }
