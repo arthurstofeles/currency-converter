@@ -3,7 +3,7 @@
     <h3>{{ title }}</h3>
   </div>
   <div class="card-body">
-    <app-loader *ngIf="state === 'loading'"></app-loader>
+    <app-loader class="loading-state" *ngIf="state === 'loading'"></app-loader>
 
     <div *ngIf="state === 'error'" class="error-state">
       <p>{{ errorMessage || "Algo deu errado" }}</p>

@@ -1,11 +1,12 @@
 <section class="app-home">
-  <div class="currencies">
-  <app-currency-card
-    *ngFor="let meta of currencyMeta"
-    [title]="meta.name"
-    [currency]="currenciesMap[meta.code]"
-    [state]="cardState"
-    (retry)="loadCurrencies()">
-  </app-currency-card>
+  <div class="container">
+    <app-currency-card
+      *ngFor="let meta of currencyMeta"
+      [title]="meta.name"
+      [currency]="currenciesMap[meta.code]"
+      [state]="cardState"
+      (retry)="loadCurrencies()"
+    >
+    </app-currency-card>
   </div>
 </section>

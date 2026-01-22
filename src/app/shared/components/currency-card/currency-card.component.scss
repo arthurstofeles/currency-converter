@@ -4,10 +4,11 @@
   border-radius: 16px;
   background-color: colors.$card-background;
   box-shadow: 0px 0px 6px 2px #cccccc40;
-  width: 430px;
+  max-width: 430px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  margin: 0 auto;
 
   .card-header {
     background-color: colors.$card-header-background;
@@ -24,11 +25,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 309px;
+
+    .loading-state {
+      min-height: 309px;
+      display: flex;
+      justify-content: center;
+    }
 
     .error-state {
       text-align: center;
+      min-height: 309px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
       p {
         font-weight: 400;
         font-size: 26px;
@@ -39,6 +48,7 @@
 
     .success-state {
       width: 100%;
+
       .currency-value {
         font-weight: 500;
         font-size: 64px;
@@ -62,6 +72,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         border-top: 0.5px solid #cccccc;
+        min-height: 99px;
 
         .box-info {
           display: flex;
