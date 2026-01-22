@@ -5,6 +5,8 @@
     {{ error }}
   </p> -->
 
+  <app-loader></app-loader>
+
   <div class="currencies" *ngIf="currencies$ | async as currencies">
     <app-currency-card
       *ngFor="let currency of currencies"
