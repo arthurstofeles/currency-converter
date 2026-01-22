@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Currency } from '../../../core/models/currency';
-import { CurrencyValueColorPipe } from '../../pipes/currency-value-color.pipe';
+import { CurrencyValueColorPipe } from '../../pipes/currency-value-color/currency-value-color.pipe';
 import { LoaderComponent } from '../loader/loader.component';
 import { ButtonComponent } from '../button/button.component';
-import { BrlValuePipe } from '../../pipes/brl-value.pipe';
+import { BrlValuePipe } from '../../pipes/brl-value/brl-value.pipe';
 
 export type CurrencyCardState = 'loading' | 'error' | 'success';
 @Component({
