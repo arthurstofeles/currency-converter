@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
 
   private startAutoRefresh(): void {
     const initialDelay = this.currencyService.getRemainingCacheTime();
-    if (initialDelay < CACHE_DURATION) this.loadCurrencies();
+    if (initialDelay !== 0) this.loadCurrencies();
     timer(initialDelay)
       .pipe(
         tap(() => this.loadCurrencies()),
