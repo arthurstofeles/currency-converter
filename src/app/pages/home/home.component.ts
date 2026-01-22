@@ -1,15 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrencyService } from '../../core/services/currency.service';
 import { CommonModule } from '@angular/common';
-import { interval, Observable, startWith, Subscription, switchMap } from 'rxjs';
+import { interval, Observable, startWith, switchMap } from 'rxjs';
 import { Currency } from '../../core/models/currency';
 import { CurrencyCardComponent } from '../../shared/components/currency-card/currency-card.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { ButtonComponent } from '../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CurrencyCardComponent, LoaderComponent],
+  imports: [
+    CommonModule,
+    CurrencyCardComponent,
+    LoaderComponent,
+    ButtonComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -27,5 +33,9 @@ export class HomeComponent implements OnInit {
       startWith(0),
       switchMap(() => this.currencyService.getCurrencies()),
     );
+  }
+
+  reload(): void {
+    console.log("Reload")
   }
 }
