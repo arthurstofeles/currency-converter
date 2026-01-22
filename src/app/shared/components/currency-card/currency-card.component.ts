@@ -15,9 +15,9 @@ export type CurrencyCardState = 'loading' | 'error' | 'success';
 })
 
 export class CurrencyCardComponent {
-  @Input({ required: true }) currency!: Currency;
+  @Input() currency?: Currency;
   @Input() state: CurrencyCardState = 'loading';
   @Input() errorMessage?: string;
-
+  @Input() title!: string;
   @Output() retry = new EventEmitter<void>();
 }

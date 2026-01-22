@@ -1,6 +1,6 @@
 <div class="currency-card">
   <div class="card-header">
-    <h3>{{ currency.name }}</h3>
+    <h3>{{ title }}</h3>
   </div>
   <div class="card-body">
     <app-loader *ngIf="state === 'loading'"></app-loader>
@@ -12,17 +12,17 @@
     </div>
 
     <div *ngIf="state === 'success'" class="success-state">
-      <p class="currency-value" [ngClass]="currency.value | currencyValueColor">
-        {{ currency.value | currency: "BRL" }}
+      <p class="currency-value" [ngClass]="currency?.value | currencyValueColor">
+        {{ currency?.value | currency: "BRL" }}
       </p>
       <div class="currency-box">
         <div class="box-info">
           <span>Variação (%)</span>
-          <p>{{ currency.variation }}</p>
+          <p>{{ currency?.variation }}</p>
         </div>
         <div class="box-info">
           <span>Atualizado em:</span>
-          <p>{{ currency.updatedAt | date: "HH:mm:ss" }}</p>
+          <p>{{ currency?.updatedAt | date: "HH:mm:ss" }}</p>
         </div>
       </div>
     </div>

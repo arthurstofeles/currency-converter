@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   catchError,
+  delay,
   finalize,
   map,
   Observable,
   of,
   tap,
+  throwError,
 } from 'rxjs';
 import { Currency } from '../models/currency';
 
@@ -43,13 +45,14 @@ export class CurrencyService {
     this.errorSubject.next(null);
 
     return this.http.get<any>(this.API_URL).pipe(
+      delay(2000),
       map((response) => this.mapResponse(response)),
       tap((currencies) => {
         this.saveCacheToStorage(currencies);
       }),
       catchError(() => {
         this.errorSubject.next('Algo deu errado');
-        return of([]);
+        return throwError(() => Error);
       }),
       finalize(() => this.loadingSubject.next(false)),
     );
@@ -64,12 +67,8 @@ export class CurrencyService {
   }
 
   private buildCurrency(code: string, data: any): Currency {
-    let index = data.name.indexOf('/');
-    let name = data.name.substring(0, index);
-
     return {
       code,
-      name: name,
       value: Number(data.bid),
       variation: Number(data.pctChange),
       updatedAt: new Date(Number(data.timestamp) * 1000),
