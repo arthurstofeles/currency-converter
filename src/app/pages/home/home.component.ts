@@ -1,15 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrencyService } from '../../core/services/currency.service';
 import { CommonModule } from '@angular/common';
-import {
-  interval,
-  startWith,
-  Subject,
-  switchMap,
-  takeUntil,
-  tap,
-  timer,
-} from 'rxjs';
+import { interval, Subject, switchMap, takeUntil, tap, timer } from 'rxjs';
 import { Currency } from '../../core/models/currency';
 import {
   CurrencyCardComponent,
@@ -28,14 +20,10 @@ export class HomeComponent implements OnInit {
   currenciesMap: Partial<Record<string, Currency>> = {};
   cardState: CurrencyCardState = 'loading';
   private destroy$ = new Subject<void>();
-  private cacheTime!: number;
 
   constructor(private currencyService: CurrencyService) {}
 
   ngOnInit(): void {
-    // interval(this.cacheTime)
-    //   .pipe(startWith(0), takeUntil(this.destroy$))
-    //   .subscribe(() => this.loadCurrencies());
     this.startAutoRefresh();
   }
 
@@ -62,7 +50,9 @@ export class HomeComponent implements OnInit {
 
   private startAutoRefresh(): void {
     const initialDelay = this.currencyService.getRemainingCacheTime();
+
     if (initialDelay !== 0) this.loadCurrencies();
+
     timer(initialDelay)
       .pipe(
         tap(() => this.loadCurrencies()),
