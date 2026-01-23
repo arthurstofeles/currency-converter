@@ -1,0 +1,104 @@
+@use "../../../../styles/colors";
+
+.currency-card {
+  border-radius: 16px;
+  background-color: colors.$card-background;
+  box-shadow: 0px 0px 6px 2px #cccccc40;
+  max-width: 430px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin: 0 auto;
+
+  .card-header {
+    background-color: colors.$card-header-background;
+    padding: 42px;
+    text-align: center;
+
+    h3 {
+      font-weight: 700;
+      font-size: 30px;
+    }
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .loading-state {
+      min-height: 298px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .error-state {
+      text-align: center;
+      min-height: 298px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      p {
+        font-weight: 400;
+        font-size: 26px;
+        color: colors.$text-basic;
+        margin-bottom: 11px;
+      }
+    }
+
+    .success-state {
+      width: 100%;
+
+      .currency-value {
+        font-weight: 500;
+        font-size: 64px;
+        text-align: center;
+        padding-top: 47px;
+        padding-bottom: 57px;
+      }
+      .currency-value.red {
+        color: colors.$text-red;
+      }
+
+      .currency-value.green {
+        color: colors.$text-green;
+      }
+
+      .currency-value.blue {
+        color: colors.$text-blue;
+      }
+
+      .currency-box {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-top: 0.5px solid #cccccc;
+        min-height: 99px;
+
+        .box-info {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding-top: 16px;
+          padding-bottom: 12px;
+
+          &:first-child {
+            border-right: 0.5px solid #cccccc;
+          }
+
+          span {
+            font-weight: 600;
+            font-size: 18px;
+            color: colors.$text-secundary;
+          }
+
+          p {
+            font-weight: 600;
+            font-size: 24px;
+            color: colors.$text-basic;
+          }
+        }
+      }
+    }
+  }
+}
