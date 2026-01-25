@@ -1,23 +1,25 @@
 @use "../../../../styles/colors";
 
-.currency-card {
-  border-radius: 16px;
-  background-color: colors.$card-background;
-  box-shadow: 0px 0px 6px 2px #cccccc40;
+.app-currency-card {
   max-width: 430px;
+  margin: 0 auto;
+  overflow: hidden;
+
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  margin: 0 auto;
+
+  border-radius: 16px;
+  background-color: colors.$card-background;
+  box-shadow: 0 0 6px 2px #cccccc40;
 
   .card-header {
-    background-color: colors.$card-header-background;
     padding: 42px;
     text-align: center;
+    background-color: colors.$card-header-background;
 
     h3 {
-      font-weight: 700;
       font-size: 30px;
+      font-weight: 700;
     }
   }
 
@@ -26,23 +28,22 @@
     flex-direction: column;
     align-items: center;
 
-    .loading-state {
+    .loading-state,
+    .error-state {
       min-height: 298px;
       display: flex;
       justify-content: center;
     }
 
     .error-state {
-      text-align: center;
-      min-height: 298px;
-      display: flex;
-      justify-content: center;
       flex-direction: column;
+      text-align: center;
+
       p {
-        font-weight: 400;
-        font-size: 26px;
-        color: colors.$text-basic;
         margin-bottom: 11px;
+        font-size: 26px;
+        font-weight: 400;
+        color: colors.$text-basic;
       }
     }
 
@@ -50,51 +51,51 @@
       width: 100%;
 
       .currency-value {
-        font-weight: 500;
-        font-size: 64px;
+        padding: 47px 0 57px;
         text-align: center;
-        padding-top: 47px;
-        padding-bottom: 57px;
-      }
-      .currency-value.red {
-        color: colors.$text-red;
-      }
+        font-size: 64px;
+        font-weight: 500;
 
-      .currency-value.green {
-        color: colors.$text-green;
-      }
+        &.red {
+          color: colors.$text-red;
+        }
 
-      .currency-value.blue {
-        color: colors.$text-blue;
+        &.green {
+          color: colors.$text-green;
+        }
+
+        &.blue {
+          color: colors.$text-blue;
+        }
       }
 
       .currency-box {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        border-top: 0.5px solid #cccccc;
+        grid-template-columns: repeat(2, 1fr);
         min-height: 99px;
+        border-top: 0.5px solid #cccccc;
 
         .box-info {
+          padding: 16px 0 12px;
+
           display: flex;
           flex-direction: column;
-          justify-content: center;
           align-items: center;
-          padding-top: 16px;
-          padding-bottom: 12px;
+          justify-content: center;
 
           &:first-child {
             border-right: 0.5px solid #cccccc;
           }
 
           span {
-            font-weight: 600;
             font-size: 18px;
+            font-weight: 600;
             color: colors.$text-secundary;
           }
 
           p {
-            font-weight: 600;
             font-size: 24px;
+            font-weight: 600;
             color: colors.$text-basic;
           }
         }

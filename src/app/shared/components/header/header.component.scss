@@ -1,19 +1,20 @@
-@use '../../../../styles/colors';
+@use "../../../../styles/colors";
 
 .app-header {
-  background-color: colors.$app-header-background;
-  padding: 28px;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  z-index: 9999;
-  position: sticky;
-  top: 0;
-  box-shadow: 2px 1px 2px 0px #cccccc40;
+  padding: 28px;
+  background-color: colors.$app-header-background;
+  box-shadow: 2px 1px 2px #cccccc40;
 
-  .img {
-    width: 265px;
+  img {
     display: block;
+    width: 265px;
   }
 }

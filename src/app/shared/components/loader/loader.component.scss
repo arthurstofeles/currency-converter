@@ -1,11 +1,13 @@
 .app-loader {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   min-height: 100px;
 
   img {
+    display: block;
     width: 100px;
-    height: 100px;
+    aspect-ratio: 1 / 1;
   }
 }

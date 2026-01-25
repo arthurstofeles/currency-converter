@@ -1,19 +1,18 @@
 @use '../../../../styles/colors';
 
 .app-button {
-  padding: 16px 8px;
-  border-radius: 16px;
-  border: none;
   min-width: 173px;
+  padding: 16px 8px;
+  border: none;
+  border-radius: 16px;
 
   background-color: colors.$button-background;
-  color: #ffffff;
+  color: colors.$text-basic;
 
-  font-family: inherit;
+  font: inherit;
   font-size: 18px;
   font-weight: 600;
   text-transform: uppercase;
-  color: colors.$text-basic;
 
   cursor: pointer;
   transition: opacity 0.2s ease;

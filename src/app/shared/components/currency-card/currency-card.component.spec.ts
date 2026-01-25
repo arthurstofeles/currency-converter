@@ -79,7 +79,7 @@ describe('CurrencyCardComponent', () => {
     const updatedAt = fixture.debugElement.queryAll(By.css('.box-info p'))[1];
 
     expect(value.nativeElement.textContent).toContain('R$');
-    expect(variation.nativeElement.textContent).toContain('0.12');
+    expect(variation.nativeElement.textContent).toContain('0,12');
     expect(updatedAt.nativeElement.textContent).toMatch(/\d{2}:\d{2}:\d{2}/);
   });
 });

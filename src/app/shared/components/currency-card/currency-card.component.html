@@ -1,4 +1,4 @@
-<div class="currency-card">
+<div class="app-currency-card">
   <div class="card-header">
     <h3>{{ title }}</h3>
   </div>
@@ -18,10 +18,10 @@
       <div class="currency-box">
         <div class="box-info">
           <span>Variação (%)</span>
-          <p>{{ currency?.variation }}</p>
+          <p>{{ currency?.variation | number:'1.2-2' }}</p>
         </div>
         <div class="box-info">
-          <span>Atualizado em:</span>
+          <span>Atualizado</span>
           <p>{{ currency?.updatedAt | date: "HH:mm:ss" }}</p>
         </div>
       </div>
