@@ -1,36 +1,36 @@
-@use "../../../styles/breakpoints" as breakpoints;
-@use "../../../styles/media-queries" as media-queries;
+@use "../../../styles/breakpoints" as bp;
+@use "../../../styles/media-queries" as mq;
 
 .app-home {
-  height: calc(100vh - 101px);
+  min-height: calc(100vh - 101px);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
-  @include media-queries.down(breakpoints.$desktop) {
-    height: auto;
-    padding: 38px 0px;
-    justify-content: start;
+  @include mq.down(bp.$desktop) {
+    min-height: auto;
+    padding: 38px 0;
+    justify-content: flex-start;
   }
 
   .container {
-    max-width: 1478px;
     width: 100%;
+    max-width: 1478px;
     margin: 16px;
+
     display: grid;
     grid-template-columns: repeat(3, minmax(280px, 1fr));
     gap: 94px;
-    justify-items: stretch;
 
-    @include media-queries.down(breakpoints.$desktop) {
-      grid-template-columns: max(430px);
+    @include mq.down(bp.$desktop) {
+      grid-template-columns: minmax(0, 430px);
       gap: 38px;
       justify-content: center;
     }
 
-    @include media-queries.down(breakpoints.$phone) {
-      grid-template-columns: max(98%);
-      justify-content: center;
+    @include mq.down(bp.$phone) {
+      grid-template-columns: 1fr;
+      margin: 0 16px;
     }
   }
 }
