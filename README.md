@@ -42,6 +42,8 @@ Pré requisitos para rodar o projeto:
 -   Angular CLI  **19.2.19**
 -   Docker **4.57.0**
 
+> ⚠️ **Atenção:** utilize a branch **`main`** para avaliar e executar este projeto. 
+
 ### Rodando o projeto sem Docker
 1. Instalar as dependências: `npm install`
 2. Subir o servidor de desenvolvimento: `npm start` ou `ng serve`
